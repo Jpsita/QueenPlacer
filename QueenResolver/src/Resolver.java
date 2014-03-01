@@ -48,7 +48,7 @@ public class Resolver {
 			int lasty = y;
 			int attempt = att;
 			int stat = 0;
-			if (totQueens >= 8) {
+			if (totQueens <= 8) {
 				for (int q = 0; q < 8; q++) {
 					for (int r = 0; r < 8; r++) {
 						if (temptbl[q][r + attempt - 1].equals(0)) {
