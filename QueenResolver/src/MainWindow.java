@@ -84,11 +84,17 @@ public class MainWindow implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if("start".equals(arg0))
+		if(arg0.getActionCommand().equals("start"))
 		{
 			int x = table.getSelectionModel().getLeadSelectionIndex();
 			int y = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-			r = new Resolver(x,y);
+			Integer ix = new Integer(x);
+			Integer iy = new Integer(y);
+			System.out.println(ix.toString() + " " + iy.toString());
+			r = new Resolver(x,y, cells);
+			r.Start();
+			cells = r.getTable();
+			
 		}
 	}
 	

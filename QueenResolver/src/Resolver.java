@@ -5,36 +5,48 @@ public class Resolver
 	private int y;
 	private Object[][] table;
 	
-	public Resolver(int e_x, int e_y)
+	public Resolver(int e_x, int e_y, Object[][] e_table)
 	{
 		x = e_x;
 		y = e_y;
-	}
-	
-	public void setTableArray(Object[][] e_table)
-	{
 		table = e_table;
 	}
+	
+
 
 	public void Start() {
-		table[x][y] = 1;
+		set(x, y);
 		int stat = 0;
-		for (int count = 0; count < 7; count++) {
-			for (int z = 0; z < 8; z++) {
-				for (int w = 0; w < 8; w++) {
-					
-					if(table[w][z].equals(0))
-					{
-						for(int z2 = 0; z2 < 8; z2++)
-						{
-							for (int w2 = 0; z2 < 8; z2++ )
-							{
-								
-							}
-						}
-					}
-				}
-			}
-		}
+
 	}
+	
+	private void set(int x, int y)
+	{
+		table[x][y] = 2;
+		for (int t1 = 0; t1 < 8; t1++)
+		{
+			table[x][t1] = 1;
+			table[t1][y] = 1;
+			try{
+			table[x - t1][y - t1] = 1;
+			}catch(Exception ex){}
+			try{
+			table[x - t1][y + t1] = 1;	
+			}catch(Exception ex){}
+			try{
+			table[x + t1][y - t1] = 1;
+			}catch(Exception ex){}
+			try{
+			table[x + t1][y + t1] = 1;
+			}catch(Exception ex){}
+		}
+			
+	}
+	
+	public Object[][] getTable()
+	{
+		return table;
+	}
+			
 }
+	
