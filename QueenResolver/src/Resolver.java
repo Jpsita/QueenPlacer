@@ -13,6 +13,7 @@ public class Resolver {
 
 	public void Start() {
 		set(startx, starty);
+		totQueens++;
 		System.out.println("Started");
 		cont(startx, starty, 1, table);
 	}
@@ -61,17 +62,61 @@ public class Resolver {
 				for (int q = 0; q < 8; q++) {
 					for (int r = 0; r < 8; r++) {
 						if (temptbl[q][r + attempt - 1].equals(0)) {
-							set(q, r);
+							set(q, r + attempt - 1);
 							stat = 1;
 							totQueens++;
-							if (cont(q, r, 1, temptbl) == 0) {
+							if (cont(q, r + attempt - 1, 1, temptbl) == 0) {
 								table = temptbl;
 								return 0;
-							} else if (cont(q, r, 1, temptbl) == 1) {
+							} else if (cont(q, r + attempt - 1, 1, temptbl) == 1) {
 								totQueens--;
 								if (cont(lastx, lasty, attempt + 1, tbl) == 1) {
 									return 1;
 								}
+							}
+						}else if(temptbl[q + attempt -1][r] == 0)
+						{
+							set(q + attempt -1, r);
+							stat = 1;
+							totQueens++;
+							if (cont(q + attempt - 1, r, 1, temptbl) == 0) {
+								table = temptbl;
+								return 0;
+							} else if (cont(q + attempt - 1, r, 1, temptbl) == 1) {
+								totQueens--;
+								if (cont(lastx, lasty, attempt + 1, tbl) == 1) {
+									return 1;
+								}
+							}
+						}else if(temptbl[q][r - attempt + 1] == 0)
+						{
+							set(q, r - attempt + 1);
+							stat = 1;
+							totQueens++;
+							if (cont(q, r - attempt + 1, 1, temptbl) == 0) {
+								table = temptbl;
+								return 0;
+							} else if (cont(q, r - attempt + 1, 1, temptbl) == 1) {
+								totQueens--;
+								if (cont(lastx, lasty, attempt + 1, tbl) == 1) {
+									return 1;
+								}
+							}
+						}else if(temptbl[q - attempt + 1][r] == 0)
+						{
+							set(q - attempt +1, r);
+							stat = 1;
+							totQueens++;
+							if (cont(q - attempt + 1, r, 1, temptbl) == 0) {
+								table = temptbl;
+								return 0;
+							} else if (cont(q - attempt + 1, r, 1, temptbl) == 1) {
+								totQueens--;
+								if (cont(lastx, lasty, attempt + 1, tbl) == 1) {
+									return 1;
+								}
+							}else{
+								return 1;
 							}
 						}
 					}
