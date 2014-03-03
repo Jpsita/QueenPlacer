@@ -16,14 +16,14 @@ public class MainWindow implements ActionListener {
 
 	private JFrame frame;
 	private JTable table;
-	private static Object cells[][];
+	private static Integer cells[][];
 	private Resolver r;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		
-		cells = new Object[8][8];
+		cells = new Integer[8][8];
 		for(int x = 0; x < 8; x ++)
 		{
 			for (int y = 0; y < 8; y++)
@@ -55,7 +55,8 @@ public class MainWindow implements ActionListener {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 203);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 183, 203);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		table = new JTable(cells, new Object[]
@@ -86,15 +87,14 @@ public class MainWindow implements ActionListener {
 		// TODO Auto-generated method stub
 		if(arg0.getActionCommand().equals("start"))
 		{
-			int x = table.getSelectionModel().getLeadSelectionIndex();
-			int y = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-			Integer ix = new Integer(x);
-			Integer iy = new Integer(y);
+			Integer ix = table.getSelectionModel().getLeadSelectionIndex();
+			Integer iy = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
 			System.out.println(ix.toString() + " " + iy.toString());
-			r = new Resolver(x,y, cells);
+			r = new Resolver(ix,iy, cells);
 			r.Start();
 			cells = r.getTable();
-			
+			table.selectAll();
+			table.clearSelection();
 		}
 	}
 	

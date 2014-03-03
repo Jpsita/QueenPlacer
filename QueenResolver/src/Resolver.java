@@ -1,10 +1,10 @@
 public class Resolver {
 	private int startx;
 	private int starty;
-	private Object[][] table;
+	private Integer[][] table;
 	private int totQueens = 0;
 
-	public Resolver(int e_x, int e_y, Object[][] e_table) {
+	public Resolver(int e_x, int e_y, Integer[][] e_table) {
 		startx = e_x;
 		starty = e_y;
 		table = e_table;
@@ -13,37 +13,46 @@ public class Resolver {
 
 	public void Start() {
 		set(startx, starty);
-
+		System.out.println("Started");
+		cont(startx, starty, 1, table);
 	}
 
 	private void set(int x, int y) {
 		table[x][y] = 2;
+		System.out.println("Queen placed at: "+ x + ", " + y);
 		for (int t1 = 0; t1 < 8; t1++) {
-			table[x][t1] = 1;
-			table[t1][y] = 1;
+			if(table[x][t1] != 2)
+				table[x][t1] = 1;
+			if(table[t1][y] != 2)
+				table[t1][y] = 1;
 			try {
-				table[x - t1][y - t1] = 1;
+				if(table[x -t1][y - t1] != 2)
+					table[x - t1][y - t1] = 1;
 			} catch (Exception ex) {
 			}
 			try {
-				table[x - t1][y + t1] = 1;
+				if(table[x - t1][ y + t1] != 2)
+					table[x - t1][y + t1] = 1;
 			} catch (Exception ex) {
 			}
 			try {
-				table[x + t1][y - t1] = 1;
+				if(table[x + t1][y - t1] != 2)
+					table[x + t1][y - t1] = 1;
 			} catch (Exception ex) {
 			}
 			try {
-				table[x + t1][y + t1] = 1;
+				if(table[x + t1][y + t1] != 2)
+					table[x + t1][y + t1] = 1;
 			} catch (Exception ex) {
 			}
 		}
-
 	}
-
-	public int cont(int x, int y, int att, Object[][] tbl) {
+	//return 0 = fatto
+	//return 1 = impossibile
+	//return 2 = finito
+	public int cont(int x, int y, int att, Integer[][] tbl) {
 		if (att <= 7) {
-			Object[][] temptbl = tbl;
+			Integer[][] temptbl = tbl;
 			int lastx = x;
 			int lasty = y;
 			int attempt = att;
@@ -64,7 +73,6 @@ public class Resolver {
 									return 1;
 								}
 							}
-
 						}
 					}
 				}
@@ -75,7 +83,7 @@ public class Resolver {
 		return 2;
 	}
 
-	public Object[][] getTable() {
+	public Integer[][] getTable() {
 		return table;
 	}
 
