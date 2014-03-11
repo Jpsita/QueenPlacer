@@ -10,7 +10,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
-import javax.swing.ListSelectionModel;
+
 
 public class MainWindow implements ActionListener {
 
@@ -28,7 +28,7 @@ public class MainWindow implements ActionListener {
 		{
 			for (int y = 0; y < 8; y++)
 			{
-				cells[x][y] = 0;
+				cells[y][x] = 0;
 			}
 		}
 		EventQueue.invokeLater(new Runnable() {
@@ -84,7 +84,6 @@ public class MainWindow implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 		if(arg0.getActionCommand().equals("start"))
 		{
 			Integer ix = table.getSelectionModel().getLeadSelectionIndex();
