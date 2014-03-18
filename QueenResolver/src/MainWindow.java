@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 
 public class MainWindow implements ActionListener {
@@ -90,10 +92,24 @@ public class MainWindow implements ActionListener {
 			Integer iy = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
 			System.out.println(ix.toString() + " " + iy.toString());
 			r = new Resolver(ix,iy, cells);
-			r.Start();
-			cells = r.getTable();
+			Integer[][] newcells = r.Start();
+			for(int x = 0; x < 8; x++)
+			{
+				for (int y = 0; y < 8; y++)
+				{
+					cells[x][y] = newcells[x][y];
+				}
+			}
+			System.out.println();
+			r.printtbl(cells);
 			table.selectAll();
 			table.clearSelection();
+			if(r.pass < 8)
+			{
+				JOptionPane.showMessageDialog(null, "Failed");
+			}else{
+				JOptionPane.showMessageDialog(null, "Success!");
+			}
 		}
 	}
 	

@@ -2,22 +2,30 @@ public class Resolver {
 	private int startx;
 	private int starty;
 	private Integer[][] table;
+	public int pass = 0;
 
 	public Resolver(int e_x, int e_y, Integer[][] e_table) {
 		startx = e_x;
 		starty = e_y;
-		table = e_table;
+		table =copytable( e_table);
 
 	}
 
-	public void Start() {
+	public Integer[][] Start() {
 		table = set(startx, starty, table, true);
 		System.out.println("Started");
 		table = cont(startx, starty, table);
+		if (table == null)
+		{
+			System.out.println("nullout");
+		}
+		printtbl(table);
+		return getTable();
+		
 	}
 
 	
-	private Integer[][] copytable(Integer[][] tbl)
+	Integer[][] copytable(Integer[][] tbl)
 	{
 		Integer[][] mytbl = new Integer[8][8];
 		for(int x = 0; x < 8; x++)
@@ -31,7 +39,9 @@ public class Resolver {
 		
 	}
 	
-	private Integer[][] set(int x, int y, Integer[][] tbl, boolean out) {
+	private Integer[][] set(int x, int y, Integer[][] mytbl, boolean out) {
+		pass += 1;
+		Integer[][] tbl = mytbl;
 		tbl[x][y] = 2;
 		if(out == true)
 			System.out.println("Queen placed at: "+ x + ", " + y);
@@ -67,33 +77,44 @@ public class Resolver {
 	//return 1 = impossibile
 	//return 2 = finito
 	private Integer[][] cont (int x, int y, Integer[][] tbl) {
-		Integer[][] temptbl = new Integer[8][8];
-		temptbl = copytable(tbl);
-		for (int j = 0; j < 7; j++) {
-			if (x + 1 == 8) {
-				return tbl;
-			} else {
-				if (tbl[x + 1][j] == 0) {
-					Integer[][] mytbl = new Integer[8][8];
-					mytbl = copytable(temptbl);
-					set(x + 1, j, mytbl, false);
-					if (cont(x + 1, j, mytbl) != temptbl) {
-						set(x + 1, j,temptbl, true);
-						temptbl = cont(x + 1, j , temptbl);
-						System.out.println("column "+ (x + 1) + " is succesful");
-						return temptbl;
-					} else {
-						if (j == 7) {
-							return null;
-						}
-					}
+		Integer[][] temptbl = copytable(tbl);
+		int myx = x + 1;
+		Integer[][] next;
+		System.out.println("phase 1");
+		if(myx >= 8)
+		{
+			return tbl;
+		}
+		for(int j = 0; j < 8; j++)
+		{
+			if(temptbl[myx][j] == 0)
+			{
+				System.out.println("phase 2");
+				temptbl = set(myx, j, temptbl, true);
+				next = cont(myx, j, temptbl);
+				if(next != null)
+				{
+					System.out.println("succes");
+					temptbl = copytable(next);
+					return temptbl;
+				}else{
+					System.out.println("failed");
+					temptbl = copytable(tbl);
 				}
 			}
 		}
 		return null;
 	}
 
-
+	public void printtbl(Integer[][] tbl)
+	{
+		for (int x = 0; x < 8; x ++)
+		{
+				System.out.println(" " + tbl[x][0] + " " + tbl[x][1] + " " +tbl[x][2] + " " + tbl[x][3] + " " + tbl[x][4] + " " + tbl[x][5] + " " + tbl[x][6] + " " + tbl[x][7]);
+		}
+	}
+	
+	
 	public Integer[][] getTable() {
 		return table;
 	}
