@@ -13,23 +13,21 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-
 public class MainWindow implements ActionListener {
 
-	private JFrame frame;
+	private JFrame frmQueenplacerVBy;
 	private JTable table;
 	private static Integer cells[][];
 	private Resolver r;
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 		cells = new Integer[8][8];
-		for(int x = 0; x < 8; x ++)
-		{
-			for (int y = 0; y < 8; y++)
-			{
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
 				cells[y][x] = 0;
 			}
 		}
@@ -37,7 +35,7 @@ public class MainWindow implements ActionListener {
 			public void run() {
 				try {
 					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
+					window.frmQueenplacerVBy.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -56,61 +54,68 @@ public class MainWindow implements ActionListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 183, 203);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		table = new JTable(cells, new Object[]
-				{"1", "2","3","4","5","6","7","8"});
+		frmQueenplacerVBy = new JFrame();
+		frmQueenplacerVBy.setTitle("QueenPlacer v.1.1 by Jpsita");
+		frmQueenplacerVBy.setResizable(false);
+		frmQueenplacerVBy.setBounds(100, 100, 183, 203);
+		frmQueenplacerVBy.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		table = new JTable(cells, new Object[] { "1", "2", "3", "4", "5", "6",
+				"7", "8" });
 		table.setCellSelectionEnabled(true);
-		frame.getContentPane().add(table, BorderLayout.NORTH);
-		
+		frmQueenplacerVBy.getContentPane().add(table, BorderLayout.NORTH);
+
 		JButton btnSetFirst = new JButton("Set First");
 		btnSetFirst.addActionListener(this);
 		btnSetFirst.setActionCommand("start");
-		frame.getContentPane().add(btnSetFirst, BorderLayout.SOUTH);
-		
+		frmQueenplacerVBy.getContentPane().add(btnSetFirst, BorderLayout.SOUTH);
+
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		
+		frmQueenplacerVBy.setJMenuBar(menuBar);
+
 		JMenu mnNewMenu = new JMenu("File");
 		menuBar.add(mnNewMenu);
-		
+
 		JMenuItem mntmNewMenuItem = new JMenuItem("Close");
 		mnNewMenu.add(mntmNewMenuItem);
-		
+
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Reset");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for (int x = 0; x < 8; x++)
+					for (int y = 0; y < 8; y++)
+						cells[x][y] = 0;
+				table.selectAll();
+				table.clearSelection();
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_1);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getActionCommand().equals("start"))
-		{
+		if (arg0.getActionCommand().equals("start")) {
 			Integer ix = table.getSelectionModel().getLeadSelectionIndex();
-			Integer iy = table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
+			Integer iy = table.getColumnModel().getSelectionModel()
+					.getLeadSelectionIndex();
 			System.out.println(ix.toString() + " " + iy.toString());
-			r = new Resolver(ix,iy, cells);
+			r = new Resolver(ix, iy, cells);
 			Integer[][] newcells = r.Start();
-			for(int x = 0; x < 8; x++)
-			{
-				for (int y = 0; y < 8; y++)
-				{
-					cells[x][y] = newcells[x][y];
+			if (newcells != null) {
+				for (int x = 0; x < 8; x++) {
+					for (int y = 0; y < 8; y++) {
+						cells[x][y] = newcells[x][y];
+					}
 				}
-			}
-			System.out.println();
-			r.printtbl(cells);
-			table.selectAll();
-			table.clearSelection();
-			if(r.pass < 8)
-			{
-				JOptionPane.showMessageDialog(null, "Failed");
-			}else{
+				System.out.println();
+				r.printtbl(cells);
+				table.selectAll();
+				table.clearSelection();
 				JOptionPane.showMessageDialog(null, "Success!");
+			} else {
+				JOptionPane.showMessageDialog(null, "Failed");
 			}
 		}
 	}
-	
+
 }
